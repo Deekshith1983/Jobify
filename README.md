@@ -1,181 +1,307 @@
-# Jobify — Monorepo (Django backend + React frontend)
+# Jobify - AI-Powered Job Board
 
-This repository contains a Django backend (`jobboard/`) and a React frontend (`frontend/`) in a single monorepo.
+**Jobify** is a modern, full-stack job board application that connects job seekers with employers through an intelligent, role-based platform. Built with Django REST Framework and React, it provides comprehensive job posting, application management, real-time messaging, and notification features.
 
-This interactive README walks you through: verifying the repository layout, preparing ignored files, initializing a single Git repo (so `frontend` is not treated as a separate Git repo), pushing to GitHub, and running both apps locally. All commands are for Windows PowerShell and should be run from the repository root (`C:\projects\jobBoard`).
+## ✨ Features
 
-Use the checkboxes below as a simple interactive checklist on GitHub.
+### For Job Seekers
+- **User Registration & Authentication** - Secure JWT-based authentication
+- **Profile Management** - Upload resumes, set preferences, manage personal info
+- **Advanced Job Search** - Filter by location, salary, job type, experience level
+- **Job Applications** - Apply to jobs with custom cover letters and additional details
+- **Real-time Messaging** - Direct communication with employers
+- **Application Tracking** - Monitor application status and history
+- **Email Notifications** - Stay updated on application responses
 
-## Quick status checklist
+### For Employers  
+- **Company Profiles** - Showcase company information and branding
+- **Job Posting Management** - Create, edit, and manage job listings
+- **Application Review** - Review and manage incoming applications
+- **Candidate Communication** - Message potential candidates directly
+- **Application Analytics** - Track job post performance and applicant metrics
 
-- [ ] Confirm `frontend` is not a nested Git repo
-- [ ] Create/update root `.gitignore` (already present)
-- [ ] Remove nested `frontend/.git` if you don't need its separate history
-- [ ] Initialize root Git repo and commit
-- [ ] Add remote and push to GitHub
-- [ ] Verify files on GitHub
+### Technical Features
+- **Real-time Communication** - WebSocket-powered messaging system
+- **File Management** - Resume uploads and company logo storage
+- **Advanced Filtering** - Dynamic search and filter capabilities
+- **Responsive Design** - Mobile-friendly Bootstrap 5 interface
+- **RESTful API** - Clean, documented API endpoints
 
----
+## 🚀 Live Demo
 
-## 1) Project layout (what to expect)
+Experience Jobify in action: **[https://jobboard-frontend-jj2h.onrender.com](https://jobboard-frontend-jj2h.onrender.com)**
 
-Top-level structure (relevant folders):
+## 🛠️ Technology Stack
 
-- `jobboard/` — Django project and app(s)
-- `frontend/` — React app created with create-react-app
-- `media/` — local uploads (should be ignored)
-- `db.sqlite3` — local SQLite database (should be ignored)
+### Backend
+- **Django 5.2.5** - Web framework
+- **Django REST Framework 3.16.0** - API framework
+- **Django Channels 4.3.1** - WebSocket support
+- **JWT Authentication** - Secure token-based auth
+- **MySQL/SQLite** - Database (configurable)
+- **Redis** - WebSocket message broker
 
-If you see a `.git` folder inside `frontend/`, treat `frontend` as a nested repo and follow the instructions below.
+### Frontend  
+- **React 19.1.1** - UI framework
+- **React Router** - Navigation
+- **Redux Toolkit** - State management
+- **Bootstrap 5** - UI components
+- **Axios** - HTTP client
 
-## 2) Check for nested git repo
+## 📦 Project Structure
 
-From PowerShell in the repo root:
-
-```powershell
-Set-Location -Path 'C:\projects\jobBoard'
-
-# Check if frontend has its own .git directory
-if (Test-Path .\frontend\.git) { Write-Output 'frontend/.git exists — frontend is a nested repo' } else { Write-Output 'No frontend/.git found — frontend is not a nested repo' }
+```
+jobBoard/
+├── jobboard/           # Django backend
+│   ├── jobboard/       # Django project settings
+│   ├── users/          # User management app
+│   ├── media/          # Uploaded files
+│   ├── manage.py       # Django management script
+│   └── requirements.txt # Python dependencies
+├── frontend/           # React frontend
+│   ├── src/
+│   │   ├── components/ # React components
+│   │   ├── contexts/   # React contexts
+│   │   └── services/   # API services
+│   ├── public/         # Static assets
+│   └── package.json    # Node dependencies
+└── README.md           # This file
 ```
 
-If the output says `frontend/.git exists` and you DO NOT want to keep the frontend history separately, remove the nested git directory (safe if you don't need the history):
+## 🚀 Local Installation Guide
 
-```powershell
-# Remove nested git metadata (this destroys the separate history, only do if you're sure)
-Remove-Item -Recurse -Force .\frontend\.git
-Write-Output 'Removed frontend/.git'
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- **Python 3.8+** ([Download Python](https://python.org/downloads/))
+- **Node.js 14+** ([Download Node.js](https://nodejs.org/))
+- **Git** ([Download Git](https://git-scm.com/))
+- **MySQL** (optional, SQLite is used by default)
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/jobBoard.git
+cd jobBoard
 ```
 
-If you want to preserve frontend commit history, use a git subtree or submodule instead — see the Advanced section below.
+### Step 2: Backend Setup (Django)
 
-## 3) Ensure root `.gitignore` is correct
-
-The repo already has a root `.gitignore`. Important files to ignore for this monorepo include:
-
-- `frontend/node_modules/` and `frontend/build/`
-- `db.sqlite3` and `jobboard/db.sqlite3`
-- `media/` and uploaded files
-- `.env` files and other secret files
-
-You can open and edit `\.gitignore` to customize it.
-
-## 4) Initialize a single root git repository and commit (if not already done)
-
-If you haven't initialized the repo at root yet, run:
+1. **Create and activate a virtual environment:**
 
 ```powershell
-# initialize repository and create main branch
-git init
-git checkout -b main
-
-# stage everything (root .gitignore prevents adding ignored files)
-git add .
-
-# if some unwanted files were tracked before, untrack them
-git rm --cached -r frontend/node_modules 2>$null
-git rm --cached jobboard/db.sqlite3 2>$null
-git rm --cached -r media 2>$null
-
-# commit
-git commit -m "Initial commit: Django backend + React frontend"
-```
-
-If you already ran `git init` and committed, you can skip the above.
-
-## 5) Add GitHub remote and push
-
-Option A — create the repo on GitHub via web UI and push:
-
-```powershell
-# replace with your repo URL
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
-git push -u origin main
-```
-
-Option B — use GitHub CLI (if installed):
-
-```powershell
-gh repo create my-repo-name --public --source=. --remote=origin --push
-```
-
-After pushing, visit the repository page on GitHub to confirm files are present and ignored files are not.
-
-## 6) Local run instructions (basic)
-
-Backend (Django)
-
-```powershell
-# create and activate a virtual environment (PowerShell)
+# Windows PowerShell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
-# install requirements
-pip install -r jobboard/requirements.txt
-
-# migrate and run
-python jobboard/manage.py migrate
-python jobboard/manage.py createsuperuser  # optional
-python jobboard/manage.py runserver
+# macOS/Linux
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-Frontend (React)
+2. **Install Python dependencies:**
 
-```powershell
-Set-Location -Path .\frontend
+```bash
+pip install -r jobboard/requirements.txt
+```
+
+3. **Configure environment variables:**
+
+Create a `.env` file in the `jobboard/jobboard/` directory:
+
+```env
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+DATABASE_URL=sqlite:///db.sqlite3
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+```
+
+4. **Run database migrations:**
+
+```bash
+cd jobboard
+python manage.py migrate
+```
+
+5. **Create a superuser (optional):**
+
+```bash
+python manage.py createsuperuser
+```
+
+6. **Start the Django development server:**
+
+```bash
+python manage.py runserver
+```
+
+The backend API will be available at `http://localhost:8000`
+
+### Step 3: Frontend Setup (React)
+
+1. **Navigate to the frontend directory:**
+
+```bash
+cd ../frontend  # or cd frontend from project root
+```
+
+2. **Install Node.js dependencies:**
+
+```bash
 npm install
+```
+
+3. **Start the React development server:**
+
+```bash
 npm start
 ```
 
-The frontend dev server (usually on http://localhost:3000) should proxy or consume the Django API depending on your configuration.
+The frontend will be available at `http://localhost:3000` and will automatically proxy API requests to the Django backend.
 
-## 7) Create `.env.example` (recommended)
+### Step 4: Verify Installation
 
-Create a file called `.env.example` listing the environment variables required (without secrets). Example:
+1. **Visit the frontend:** Open `http://localhost:3000` in your browser
+2. **Test API endpoints:** Visit `http://localhost:8000/api/` to see the API root
+3. **Admin panel:** Visit `http://localhost:8000/admin/` (if you created a superuser)
 
-```
-# .env.example
-DJANGO_SECRET_KEY=replace_me
-DATABASE_URL=sqlite:///db.sqlite3
-DEBUG=True
-```
+## 🔧 Configuration
 
-Add `.env` to `.gitignore` (already done) and create a local `.env` that contains real secrets.
+### Database Configuration
 
-## 8) Advanced: preserve frontend history (optional)
+**SQLite (Default):**
+No additional setup required. The database file will be created automatically.
 
-If you want to keep the `frontend` commit history that currently exists in `frontend/.git`, instead of deleting `frontend/.git`, use one of these approaches:
-
-- Git subtree (recommended for monorepo consolidation):
-
-```powershell
-# from repo root (when frontend is a separate repo already pushed to remote)
-git remote add frontend-remote https://github.com/YOUR_USERNAME/FRONTEND_REPO.git
-git fetch frontend-remote
-git subtree add --prefix=frontend frontend-remote/main --squash
+**MySQL:**
+1. Install MySQL and create a database
+2. Update your `.env` file:
+```env
+DATABASE_URL=mysql://username:password@localhost:3306/jobboard_db
 ```
 
-- Git submodule (keeps it as a separate repo inside this repo):
+### Email Configuration
 
-```powershell
-git submodule add https://github.com/YOUR_USERNAME/FRONTEND_REPO.git frontend
-git submodule update --init --recursive
+For email notifications to work, configure your Gmail settings in `.env`:
+
+```env
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password  # Use App Password, not regular password
 ```
 
-Submodules require extra steps for contributors; subtrees are easier if you want a single repo containing both histories.
+### Redis Configuration (for WebSocket messaging)
 
-## 9) Troubleshooting
+Install Redis and update settings if needed:
+```bash
+# Ubuntu/Debian
+sudo apt-get install redis-server
 
-- If an ignored file is already tracked, remove it from the index and commit the removal (`git rm --cached path`).
-- If secrets were accidentally committed, DO NOT push. Use the BFG Repo-Cleaner or `git filter-repo` to remove secrets from history before pushing (I can help with that).
-- If your pushes are rejected, run `git pull --rebase origin main` to reconcile, then push again.
+# macOS
+brew install redis
 
-## Live demo / Deployment
+# Windows (via WSL or Docker)
+docker run -d -p 6379:6379 redis:alpine
+```
 
-The React frontend for this project is deployed and available at:
+## 🎯 Usage
 
-https://jobboard-frontend-jj2h.onrender.com
+### For Job Seekers:
+1. **Register** for a new account or **login**
+2. **Complete your profile** - add personal info, upload resume
+3. **Browse jobs** - use search and filters to find relevant positions
+4. **Apply to jobs** - submit applications with cover letters
+5. **Track applications** - monitor status and employer responses
+6. **Message employers** - communicate directly through the platform
 
-Visit the link to see the live frontend. If the frontend communicates with the backend, ensure the backend API is reachable or replace API endpoints with production URLs as needed.
+### For Employers:
+1. **Register as an employer** and set up your company profile
+2. **Post jobs** - create detailed job listings
+3. **Review applications** - manage incoming candidate applications
+4. **Contact candidates** - message potential hires
+5. **Manage listings** - edit or close job postings
 
+## 🚀 Development
 
+### API Documentation
+The Django REST API provides endpoints for:
+- User authentication (`/api/auth/`)
+- Job listings (`/api/jobs/`)
+- Applications (`/api/applications/`)
+- User profiles (`/api/users/`)
+- Messaging (`/api/messages/`)
+
+### Running Tests
+
+**Backend tests:**
+```bash
+cd jobboard
+python manage.py test
+```
+
+**Frontend tests:**
+```bash
+cd frontend
+npm test
+```
+
+### Building for Production
+
+**Frontend build:**
+```bash
+cd frontend
+npm run build
+```
+
+**Django production setup:**
+- Set `DEBUG=False` in settings
+- Configure proper database settings
+- Set up static file serving
+- Configure ALLOWED_HOSTS
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- **Live Demo:** [https://jobboard-frontend-jj2h.onrender.com](https://jobboard-frontend-jj2h.onrender.com)
+- **Repository:** [GitHub Repository](https://github.com/YOUR_USERNAME/jobBoard)
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+1. Check the [Issues](https://github.com/YOUR_USERNAME/jobBoard/issues) page
+2. Create a new issue with detailed information
+3. Refer to the troubleshooting section below
+
+## 🐛 Troubleshooting
+
+**Common Issues:**
+
+1. **Port already in use:**
+   - Backend: Change port with `python manage.py runserver 8001`
+   - Frontend: Set `PORT=3001` environment variable
+
+2. **Database errors:**
+   - Ensure migrations are run: `python manage.py migrate`
+   - For MySQL: Verify database exists and credentials are correct
+
+3. **Module not found errors:**
+   - Ensure virtual environment is activated
+   - Reinstall dependencies: `pip install -r requirements.txt`
+
+4. **CORS errors:**
+   - Verify `CORS_ALLOW_ALL_ORIGINS = True` in Django settings
+   - Check that both servers are running
+
+5. **WebSocket connection issues:**
+   - Ensure Redis is running
+   - Check Django Channels configuration
