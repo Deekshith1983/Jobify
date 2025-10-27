@@ -1,0 +1,54 @@
+# Django / Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+*.py[cod]
+__pycache__/
+*/__pycache__/
+*.so
+*.egg-info/
+dist/
+build/
+
+# Django DB
+db.sqlite3
+jobboard/db.sqlite3
+
+# Media and uploaded files
+media/
+media/**
+resumes/
+company_logos/
+job_descriptions/
+
+# React / Node
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# Environment files
+.env
+.env.*
+*.env
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# npm lockfile (ignore if you want to track it, otherwise remove)
+package-lock.json
+
+# Ignore local IDE/editor files
+.idea/
+
+# Ignore Python virtualenvs in any subfolder
+**/venv/
+**/.venv/
