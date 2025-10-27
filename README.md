@@ -178,19 +178,4 @@ https://jobboard-frontend-jj2h.onrender.com
 
 Visit the link to see the live frontend. If the frontend communicates with the backend, ensure the backend API is reachable or replace API endpoints with production URLs as needed.
 
-## 10) What I added/changed in this repository
 
-- Root `.gitignore` updated to cover Django + React artifacts (if you want to change it, edit the file).
-- This `README.md` file created to provide an interactive guide.
-
-## 11) Next steps I can do for you
-
-- Create a `.env.example` file in the root and add example variables (I can add it now).
-- Create a `README-frontend.md` or expand this with more run/deploy instructions.
-- Add a GitHub Actions workflow to run backend tests and build frontend on push.
-
-If you want me to perform any of these now, reply with which one and I'll add it.
-
----
-
-Feel free to tick the checklist above on GitHub as you complete items.
